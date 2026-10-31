@@ -303,17 +303,17 @@ export const MapContainer: React.FC<MapContainerProps> = ({
   // If no API key or script failed, render friendly UI fallback
   if (!apiKey || loadError) {
     return (
-      <div className="flex-1 flex flex-col items-center justify-center bg-slate-950 p-6 text-center text-slate-300">
-        <div className="w-16 h-16 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400 mb-4 shadow-xl">
+      <div className="flex-1 flex flex-col items-center justify-center bg-neutral-100 dark:bg-[#020617] p-6 text-center text-neutral-800 dark:text-neutral-200 transition-colors">
+        <div className="w-16 h-16 rounded-2xl bg-red-500/10 border border-red-500/20 flex items-center justify-center text-[#ef4444] mb-4 shadow-xl">
           <Key className="w-8 h-8" />
         </div>
-        <h2 className="text-xl font-bold text-white mb-2">Google Maps API Key Required</h2>
-        <p className="text-sm text-slate-400 max-w-md mb-6 leading-relaxed">
+        <h2 className="text-xl font-bold text-neutral-900 dark:text-white mb-2">Google Maps API Key Required</h2>
+        <p className="text-sm text-neutral-500 dark:text-neutral-400 max-w-md mb-6 leading-relaxed">
           To visualize Kenya's administrative boundaries and choropleth demographics with the Google Maps Data layer, provide your Google Maps JavaScript API key.
         </p>
         <button
           onClick={onOpenApiKeyModal}
-          className="flex items-center gap-2 px-6 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-sm shadow-xl shadow-emerald-950/40 transition-all hover:scale-105"
+          className="btn btn-primary shadow-lg shadow-red-500/20 hover:scale-105"
         >
           <Key className="w-4 h-4" /> Enter API Key to Unlock Map
         </button>
