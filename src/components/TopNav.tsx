@@ -7,10 +7,9 @@ import {
   Image as ImageIcon,
   Key,
   ChevronRight,
-  Globe,
   Sun,
   Moon,
-  Layers,
+  Compass,
 } from 'lucide-react';
 import { HierarchyBreadcrumb } from '@/types/map';
 
@@ -60,36 +59,37 @@ export const TopNav: React.FC<TopNavProps> = ({
   }, []);
 
   return (
-    <header className="h-16 border-b border-slate-800 bg-slate-900/95 backdrop-blur px-4 flex items-center justify-between gap-4 z-30 select-none">
-      {/* Brand & Breadcrumbs */}
+    <header className="header z-30 sticky top-0 h-16 px-4 md:px-6 flex items-center justify-between gap-4 select-none shadow-sm transition-colors">
+      {/* Brand & OpenGIS Badge & Breadcrumbs */}
       <div className="flex items-center gap-4 min-w-0">
-        <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-emerald-600 via-red-600 to-black flex items-center justify-center shadow-md shadow-emerald-950">
-            <Globe className="w-4 h-4 text-white" />
+        <div className="flex items-center gap-2.5 shrink-0">
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-red-500 to-red-700 flex items-center justify-center shadow-md shadow-red-500/20 text-white">
+            <Compass className="w-5 h-5 animate-pulse" />
           </div>
           <div className="hidden sm:block">
-            <h1 className="text-sm font-bold tracking-tight text-white flex items-center gap-1.5">
-              KENYA DEMOGRAPHIC MAP
-              <span className="px-1.5 py-0.5 rounded text-[10px] font-medium bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
-                2019/2022
+            <h1 className="text-sm font-extrabold tracking-tight text-neutral-900 dark:text-white flex items-center gap-1.5">
+              <span>KENYA</span>
+              <span className="text-[#ef4444]">DEMOGRAPHIC MAP</span>
+              <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-red-500/10 text-[#ef4444] border border-red-500/20">
+                OpenGIS
               </span>
             </h1>
           </div>
         </div>
 
         {/* Breadcrumb Navigator */}
-        <nav className="flex items-center gap-1 text-xs text-slate-400 overflow-x-auto py-1">
+        <nav className="flex items-center gap-1 text-xs text-neutral-500 dark:text-neutral-400 overflow-x-auto py-1">
           {breadcrumbs.map((crumb, idx) => {
             const isLast = idx === breadcrumbs.length - 1;
             return (
               <React.Fragment key={idx}>
-                {idx > 0 && <ChevronRight className="w-3.5 h-3.5 text-slate-600 shrink-0" />}
+                {idx > 0 && <ChevronRight className="w-3.5 h-3.5 text-neutral-400 dark:text-neutral-600 shrink-0" />}
                 <button
                   onClick={() => onNavigateBreadcrumb(idx)}
-                  className={`px-2 py-1 rounded-md transition-colors whitespace-nowrap ${
+                  className={`px-2.5 py-1 rounded-lg text-xs font-semibold transition-all whitespace-nowrap ${
                     isLast
-                      ? 'font-semibold text-emerald-400 bg-emerald-500/10 cursor-default'
-                      : 'text-slate-300 hover:text-white hover:bg-slate-800'
+                      ? 'text-[#ef4444] bg-red-500/10 dark:bg-red-500/20 border border-red-500/20 cursor-default'
+                      : 'text-neutral-700 dark:text-neutral-300 hover:text-[#ef4444] dark:hover:text-white hover:bg-neutral-100 dark:hover:bg-neutral-800'
                   }`}
                 >
                   {crumb.name}
@@ -100,10 +100,10 @@ export const TopNav: React.FC<TopNavProps> = ({
         </nav>
       </div>
 
-      {/* Center Search Autocomplete */}
+      {/* Center OpenGIS Search Autocomplete */}
       <div ref={searchRef} className="relative flex-1 max-w-xs md:max-w-md hidden md:block">
         <div className="relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-400" />
           <input
             type="text"
             value={searchQuery}
@@ -113,12 +113,12 @@ export const TopNav: React.FC<TopNavProps> = ({
             }}
             onFocus={() => setShowResults(true)}
             placeholder="Search County, Sub-County, or Ward..."
-            className="w-full pl-9 pr-4 py-1.5 rounded-xl bg-slate-800/90 border border-slate-700/80 text-xs text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
+            className="w-full pl-10 pr-4 py-2 rounded-xl bg-neutral-100 dark:bg-[#1e2939] border border-neutral-200 dark:border-[#3e3e3e] text-xs text-neutral-900 dark:text-neutral-100 placeholder-neutral-400 focus:outline-none focus:border-[#ef4444] focus:ring-2 focus:ring-red-500/20 transition-all font-medium"
           />
         </div>
 
         {showResults && filteredResults.length > 0 && (
-          <div className="absolute left-0 right-0 top-full mt-1.5 bg-slate-900 border border-slate-700/90 rounded-xl shadow-2xl py-1.5 z-50 max-h-72 overflow-y-auto">
+          <div className="absolute left-0 right-0 top-full mt-2 bg-white dark:bg-[#0f172a] border border-neutral-200 dark:border-[#3e3e3e] rounded-xl shadow-2xl py-1.5 z-50 max-h-72 overflow-y-auto">
             {filteredResults.map((item, idx) => (
               <button
                 key={idx}
@@ -127,15 +127,17 @@ export const TopNav: React.FC<TopNavProps> = ({
                   setShowResults(false);
                   setSearchQuery('');
                 }}
-                className="w-full px-3 py-2 text-left hover:bg-slate-800/80 flex items-center justify-between text-xs transition-colors"
+                className="w-full px-3.5 py-2 text-left hover:bg-red-50 dark:hover:bg-neutral-800/80 flex items-center justify-between text-xs transition-colors"
               >
                 <div>
-                  <span className="font-medium text-white">{item.name}</span>
+                  <span className="font-semibold text-neutral-800 dark:text-neutral-100">{item.name}</span>
                   {item.parentName && (
-                    <span className="text-[11px] text-slate-400 ml-1.5">({item.parentName})</span>
+                    <span className="text-[11px] text-neutral-500 dark:text-neutral-400 ml-1.5">
+                      ({item.parentName})
+                    </span>
                   )}
                 </div>
-                <span className="px-1.5 py-0.5 rounded text-[10px] bg-slate-800 text-slate-300 border border-slate-700">
+                <span className="px-2 py-0.5 rounded text-[10px] font-semibold bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300 border border-neutral-200 dark:border-neutral-700">
                   {item.level}
                 </span>
               </button>
@@ -144,45 +146,49 @@ export const TopNav: React.FC<TopNavProps> = ({
         )}
       </div>
 
-      {/* Actions */}
+      {/* OpenGIS Styled Action Controls */}
       <div className="flex items-center gap-2">
         <button
           onClick={onExportCsv}
           title="Download active view data as CSV"
-          className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs text-slate-200 border border-slate-700 transition-colors"
+          className="btn btn-sm btn-outline-primary"
         >
-          <Download className="w-3.5 h-3.5 text-emerald-400" />
+          <Download className="w-3.5 h-3.5 text-[#ef4444]" />
           <span className="hidden sm:inline">CSV</span>
         </button>
 
         <button
           onClick={onExportPng}
           title="Export map view as PNG image"
-          className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs text-slate-200 border border-slate-700 transition-colors"
+          className="btn btn-sm btn-outline-primary"
         >
-          <ImageIcon className="w-3.5 h-3.5 text-cyan-400" />
+          <ImageIcon className="w-3.5 h-3.5 text-[#ef4444]" />
           <span className="hidden sm:inline">PNG</span>
         </button>
 
         <button
           onClick={onOpenApiKeyModal}
           title="Configure Google Maps API Key"
-          className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border text-xs transition-colors ${
+          className={`btn btn-sm ${
             hasApiKey
-              ? 'bg-slate-800 border-slate-700 text-slate-300 hover:text-white'
-              : 'bg-amber-500/10 border-amber-500/30 text-amber-300 hover:bg-amber-500/20 animate-pulse'
+              ? 'btn-outline-primary'
+              : 'bg-amber-50 dark:bg-amber-950/40 border-amber-300 dark:border-amber-700 text-amber-700 dark:text-amber-300 animate-pulse'
           }`}
         >
-          <Key className="w-3.5 h-3.5 text-amber-400" />
+          <Key className="w-3.5 h-3.5 text-amber-500" />
           <span className="hidden sm:inline">{hasApiKey ? 'API Key' : 'Set Key'}</span>
         </button>
 
         <button
           onClick={onToggleTheme}
           title="Toggle Light/Dark Theme"
-          className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 transition-colors"
+          className="btn btn-sm btn-outline-primary !px-2.5"
         >
-          {theme === 'dark' ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-slate-400" />}
+          {theme === 'dark' ? (
+            <Sun className="w-4 h-4 text-amber-400" />
+          ) : (
+            <Moon className="w-4 h-4 text-neutral-600" />
+          )}
         </button>
       </div>
     </header>
