@@ -108,6 +108,7 @@ export default function Home() {
       try {
         const counties = await loadCountiesGeoJson();
         const subcounties = await loadSubcountiesGeoJson();
+        const wards = await loadWardsGeoJson();
         const indexList: any[] = [];
 
         counties.features.forEach((f: any) => {
@@ -128,6 +129,19 @@ export default function Home() {
             parentName: `${f.properties.county_name} County`,
           });
         });
+
+        if (wards && wards.features) {
+          wards.features.forEach((f: any) => {
+            const wName = f.properties.name || 'Unnamed Ward';
+            indexList.push({
+              code: f.properties.code,
+              name: wName.toLowerCase().includes('ward') ? wName : `${wName} Ward`,
+              level: 'Ward',
+              countyCode: f.properties.county_code,
+              parentName: `${f.properties.subcounty_name ? f.properties.subcounty_name + ', ' : ''}${f.properties.county_name || ''} County`,
+            });
+          });
+        }
 
         setSearchIndex(indexList);
       } catch (err) {
@@ -216,6 +230,47 @@ export default function Home() {
     }
   }, [selectedFeature, activeLevel]);
 
+  // 8.1 Handle Administrative Level Change (County / Sub-County / Ward / Village)
+  const handleLevelChange = useCallback(
+    (lvl: AdminLevel) => {
+      setActiveLevel(lvl);
+      setIsMobileSidebarOpen(false);
+
+      // If switching level, verify activeIndicator is available for the new level;
+      // otherwise, automatically fallback to an available indicator (e.g. pop_total)
+      if (!activeIndicator.availableLevels.includes(lvl)) {
+        const fallback =
+          INDICATORS.find((ind) => ind.availableLevels.includes(lvl)) || INDICATORS[0];
+        setActiveIndicator(fallback);
+      }
+
+      // Update breadcrumbs and scope if changing levels
+      if (lvl === 'county') {
+        setSelectedCountyCode(undefined);
+        setSelectedCountyName(undefined);
+        setSelectedSubcountyName(undefined);
+        setSelectedBounds(null);
+        setBreadcrumbs([{ level: 'national', name: 'Kenya' }]);
+      } else if (lvl === 'ward' && !selectedCountyCode) {
+        setBreadcrumbs([
+          { level: 'national', name: 'Kenya' },
+          { level: 'ward', name: 'All Wards (1,450)' },
+        ]);
+      } else if (lvl === 'village' && !selectedCountyCode) {
+        setBreadcrumbs([
+          { level: 'national', name: 'Kenya' },
+          { level: 'village', name: 'All Settlements' },
+        ]);
+      } else if (lvl === 'subcounty' && !selectedCountyCode) {
+        setBreadcrumbs([
+          { level: 'national', name: 'Kenya' },
+          { level: 'subcounty', name: 'All Sub-Counties (290)' },
+        ]);
+      }
+    },
+    [activeIndicator, selectedCountyCode]
+  );
+
   // 9. Breadcrumb Navigation Handler
   const handleNavigateBreadcrumb = useCallback((index: number) => {
     if (index === 0) {
@@ -227,12 +282,21 @@ export default function Home() {
       setSelectedBounds(null);
       setBreadcrumbs([{ level: 'national', name: 'Kenya' }]);
     } else if (index === 1) {
-      // Return to County's Subcounties
-      setActiveLevel('subcounty');
-      setSelectedSubcountyName(undefined);
-      setBreadcrumbs((prev) => prev.slice(0, 2));
+      // Return to County's Subcounties or previous level
+      if (breadcrumbs[1]?.level === 'county') {
+        setActiveLevel('subcounty');
+        setSelectedSubcountyName(undefined);
+        setBreadcrumbs((prev) => prev.slice(0, 2));
+      } else {
+        setActiveLevel('county');
+        setSelectedCountyCode(undefined);
+        setSelectedCountyName(undefined);
+        setSelectedSubcountyName(undefined);
+        setSelectedBounds(null);
+        setBreadcrumbs([{ level: 'national', name: 'Kenya' }]);
+      }
     }
-  }, []);
+  }, [breadcrumbs]);
 
   // 10. Search Selection Handler
   const handleSearchSelect = useCallback(
@@ -254,6 +318,15 @@ export default function Home() {
           { level: 'national', name: 'Kenya' },
           { level: 'county', code: item.countyCode, name: item.parentName || 'County' },
           { level: 'subcounty', name: `${item.name} Sub-County` },
+        ]);
+      } else if (item.level === 'Ward') {
+        if (item.countyCode) {
+          setSelectedCountyCode(item.countyCode);
+        }
+        setActiveLevel('ward');
+        setBreadcrumbs([
+          { level: 'national', name: 'Kenya' },
+          { level: 'ward', name: item.name },
         ]);
       }
     },
@@ -298,10 +371,7 @@ export default function Home() {
         >
           <SidebarControls
             activeLevel={activeLevel}
-            onChangeLevel={(lvl) => {
-              setActiveLevel(lvl);
-              setIsMobileSidebarOpen(false);
-            }}
+            onChangeLevel={handleLevelChange}
             activeIndicator={activeIndicator}
             onChangeIndicator={(ind) => setActiveIndicator(ind)}
             scaleType={scaleType}
