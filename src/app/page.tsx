@@ -269,7 +269,6 @@ export default function Home() {
         onSearchSelect={handleSearchSelect}
         searchIndex={searchIndex}
         onExportCsv={() => exportDataAsCsv(geoJsonData?.features || [], activeIndicator, activeLevel)}
-        onExportPng={() => exportMapAsPng('main-map-viewport')}
         onOpenAreaExportModal={() => setIsExportAreaModalOpen(true)}
         onOpenApiKeyModal={() => setIsApiKeyModalOpen(true)}
         hasApiKey={!!apiKey}
