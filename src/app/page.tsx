@@ -8,6 +8,7 @@ import { Legend } from '@/components/Legend';
 import { HoverTooltip } from '@/components/HoverTooltip';
 import { ApiKeyModal } from '@/components/ApiKeyModal';
 import { AreaProfileModal } from '@/components/AreaProfileModal';
+import { ExportAreaModal } from '@/components/ExportAreaModal';
 import { AdminLevel, IndicatorDefinition, INDICATORS } from '@/types/indicators';
 import {
   HierarchyBreadcrumb,
@@ -76,6 +77,7 @@ export default function Home() {
   // 4.1 Selected Feature for Individual Area Profile & Export (CSV, PDF, GeoJSON)
   const [selectedFeature, setSelectedFeature] = useState<any | null>(null);
   const [isAreaProfileOpen, setIsAreaProfileOpen] = useState(false);
+  const [isExportAreaModalOpen, setIsExportAreaModalOpen] = useState(false);
 
   // 5. Load GeoJSON when Level or County changes
   const refreshGeoJson = useCallback(async () => {
@@ -268,6 +270,7 @@ export default function Home() {
         searchIndex={searchIndex}
         onExportCsv={() => exportDataAsCsv(geoJsonData?.features || [], activeIndicator, activeLevel)}
         onExportPng={() => exportMapAsPng('main-map-viewport')}
+        onOpenAreaExportModal={() => setIsExportAreaModalOpen(true)}
         onOpenApiKeyModal={() => setIsApiKeyModalOpen(true)}
         hasApiKey={!!apiKey}
         theme={theme}
@@ -362,6 +365,15 @@ export default function Home() {
         rank={selectedFeature ? ranksMap[String(selectedFeature.properties?.code)] : undefined}
         onDrillDown={handleDrillDownFromModal}
         canDrillDown={activeLevel !== 'village'}
+      />
+
+      {/* Navbar Area Export Modal (Direct Level & Unit Selection -> CSV, PDF, GeoJSON) */}
+      <ExportAreaModal
+        isOpen={isExportAreaModalOpen}
+        onClose={() => setIsExportAreaModalOpen(false)}
+        currentFeature={selectedFeature}
+        currentLevel={activeLevel}
+        currentCountyCode={selectedCountyCode}
       />
     </div>
   );
