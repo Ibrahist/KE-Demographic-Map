@@ -9,7 +9,6 @@ import {
   ChevronRight,
   Sun,
   Moon,
-  Compass,
 } from 'lucide-react';
 import { HierarchyBreadcrumb } from '@/types/map';
 
@@ -63,8 +62,12 @@ export const TopNav: React.FC<TopNavProps> = ({
       {/* Brand & Breadcrumbs */}
       <div className="flex items-center gap-4 min-w-0">
         <div className="flex items-center gap-2.5 shrink-0">
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-red-500 to-red-700 flex items-center justify-center shadow-md shadow-red-500/20 text-white">
-            <Compass className="w-5 h-5 animate-pulse" />
+          <div className="w-9 h-9 rounded-xl overflow-hidden flex items-center justify-center shadow-md shadow-red-500/15 bg-neutral-100 dark:bg-neutral-800 p-0.5 border border-neutral-200 dark:border-[#3e3e3e]">
+            <img
+              src="/kenya.png"
+              alt="Kenya App Logo"
+              className="w-full h-full object-contain"
+            />
           </div>
           <div className="hidden sm:block">
             <h1 className="text-sm font-extrabold tracking-tight text-neutral-900 dark:text-white flex items-center gap-1.5">
