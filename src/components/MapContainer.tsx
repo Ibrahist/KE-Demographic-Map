@@ -159,13 +159,18 @@ export const MapContainer: React.FC<MapContainerProps> = ({
 
       // Fit bounds if no specific county bounds were provided
       if (!selectedBounds && addedFeatures.length > 0) {
-        const bounds = new google.maps.LatLngBounds();
-        addedFeatures.forEach((feature) => {
-          feature.getGeometry()?.forEachLatLng((latLng) => {
-            bounds.extend(latLng);
+        if (addedFeatures.length > 100) {
+          // Fast national fit for wards or large datasets
+          map.fitBounds({ south: -4.7, north: 5.5, west: 33.9, east: 41.9 }, 30);
+        } else {
+          const bounds = new google.maps.LatLngBounds();
+          addedFeatures.forEach((feature) => {
+            feature.getGeometry()?.forEachLatLng((latLng) => {
+              bounds.extend(latLng);
+            });
           });
-        });
-        map.fitBounds(bounds, 30);
+          map.fitBounds(bounds, 30);
+        }
       }
     } catch (err) {
       console.error('Error adding GeoJSON to data layer:', err);
