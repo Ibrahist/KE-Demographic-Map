@@ -5,7 +5,6 @@ import {
   Search,
   Download,
   FileDown,
-  Image as ImageIcon,
   Key,
   ChevronRight,
   Sun,
@@ -20,7 +19,6 @@ interface TopNavProps {
   onSearchSelect: (item: { code: string | number; name: string; level: string; countyCode?: number; parentName?: string }) => void;
   searchIndex: Array<{ code: string | number; name: string; level: string; countyCode?: number; parentName?: string }>;
   onExportCsv: () => void;
-  onExportPng: () => void;
   onOpenAreaExportModal: () => void;
   onOpenApiKeyModal: () => void;
   hasApiKey: boolean;
@@ -34,7 +32,6 @@ export const TopNav: React.FC<TopNavProps> = ({
   onSearchSelect,
   searchIndex,
   onExportCsv,
-  onExportPng,
   onOpenAreaExportModal,
   onOpenApiKeyModal,
   hasApiKey,
@@ -63,7 +60,7 @@ export const TopNav: React.FC<TopNavProps> = ({
 
   return (
     <header className="header z-30 sticky top-0 h-16 px-4 md:px-6 flex items-center justify-between gap-4 select-none shadow-sm transition-colors">
-      {/* Brand & OpenGIS Badge & Breadcrumbs */}
+      {/* Brand & Breadcrumbs */}
       <div className="flex items-center gap-4 min-w-0">
         <div className="flex items-center gap-2.5 shrink-0">
           <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-red-500 to-red-700 flex items-center justify-center shadow-md shadow-red-500/20 text-white">
@@ -73,9 +70,6 @@ export const TopNav: React.FC<TopNavProps> = ({
             <h1 className="text-sm font-extrabold tracking-tight text-neutral-900 dark:text-white flex items-center gap-1.5">
               <span>KENYA</span>
               <span className="text-[#ef4444]">DEMOGRAPHIC MAP</span>
-              <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-red-500/10 text-[#ef4444] border border-red-500/20">
-                OpenGIS
-              </span>
             </h1>
           </div>
         </div>
@@ -103,7 +97,7 @@ export const TopNav: React.FC<TopNavProps> = ({
         </nav>
       </div>
 
-      {/* Center OpenGIS Search Autocomplete */}
+      {/* Center Search Autocomplete */}
       <div ref={searchRef} className="relative flex-1 max-w-xs md:max-w-md hidden md:block">
         <div className="relative">
           <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-400" />
@@ -149,9 +143,9 @@ export const TopNav: React.FC<TopNavProps> = ({
         )}
       </div>
 
-      {/* OpenGIS Styled Action Controls */}
+      {/* Styled Action Controls (PNG and openGIS removed per request) */}
       <div className="flex items-center gap-2">
-        {/* NEW: Export Area Button (County, Sub-County, Ward, Village -> CSV, PDF, GeoJSON) */}
+        {/* Export Area Button (County, Sub-County, Ward, Village -> CSV, PDF, GeoJSON) */}
         <button
           onClick={onOpenAreaExportModal}
           title="Export individual area data as CSV, PDF, or GeoJSON (County, Sub-County, Ward, Village)"
@@ -168,15 +162,6 @@ export const TopNav: React.FC<TopNavProps> = ({
         >
           <Download className="w-3.5 h-3.5 text-[#ef4444]" />
           <span className="hidden sm:inline">CSV</span>
-        </button>
-
-        <button
-          onClick={onExportPng}
-          title="Export map view as PNG image"
-          className="btn btn-sm btn-outline-primary"
-        >
-          <ImageIcon className="w-3.5 h-3.5 text-[#ef4444]" />
-          <span className="hidden sm:inline">PNG</span>
         </button>
 
         <button
