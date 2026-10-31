@@ -4,6 +4,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import {
   Search,
   Download,
+  FileDown,
   Image as ImageIcon,
   Key,
   ChevronRight,
@@ -20,6 +21,7 @@ interface TopNavProps {
   searchIndex: Array<{ code: string | number; name: string; level: string; countyCode?: number; parentName?: string }>;
   onExportCsv: () => void;
   onExportPng: () => void;
+  onOpenAreaExportModal: () => void;
   onOpenApiKeyModal: () => void;
   hasApiKey: boolean;
   theme: 'dark' | 'light';
@@ -33,6 +35,7 @@ export const TopNav: React.FC<TopNavProps> = ({
   searchIndex,
   onExportCsv,
   onExportPng,
+  onOpenAreaExportModal,
   onOpenApiKeyModal,
   hasApiKey,
   theme,
@@ -148,6 +151,16 @@ export const TopNav: React.FC<TopNavProps> = ({
 
       {/* OpenGIS Styled Action Controls */}
       <div className="flex items-center gap-2">
+        {/* NEW: Export Area Button (County, Sub-County, Ward, Village -> CSV, PDF, GeoJSON) */}
+        <button
+          onClick={onOpenAreaExportModal}
+          title="Export individual area data as CSV, PDF, or GeoJSON (County, Sub-County, Ward, Village)"
+          className="btn btn-sm btn-primary flex items-center gap-1.5 shadow-sm"
+        >
+          <FileDown className="w-3.5 h-3.5" />
+          <span>Export Area</span>
+        </button>
+
         <button
           onClick={onExportCsv}
           title="Download active view data as CSV"
