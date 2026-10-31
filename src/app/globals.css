@@ -3,31 +3,324 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 255, 255, 255;
-  --background-start-rgb: 15, 23, 42;
-  --background-end-rgb: 2, 6, 23;
+  /* OpenGIS Typography & Modular Scale */
+  --font-primary: 'Mulish', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-secondary: 'Mulish', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
+  --text-h1: 2.98598rem;
+  --text-h1-sm: 2.68739rem;
+  --text-h2: 2.48832rem;
+  --text-h2-sm: 2.23949rem;
+  --text-h3: 2.0736rem;
+  --text-h3-sm: 1.86624rem;
+  --text-h4: 1.728rem;
+  --text-h4-sm: 1.5552rem;
+  --text-h5: 1.44rem;
+  --text-h5-sm: 1.296rem;
+  --text-h6: 1.2rem;
+  --text-h6-sm: 1.08rem;
+  --text-base: 16px;
+  --text-base-sm: 12.8px;
+
+  /* OpenGIS Light Theme Color Tokens */
+  --color-primary: #ef4444;
+  --color-primary-dark: #d63c3c;
+  --color-secondary: #f3f4f6;
+  --color-secondary-dark: #334155;
+  --color-body: #ffffff;
+  --color-body-dark: #020617;
+  --color-border: #eaeaea;
+  --color-light: #f6f6f6;
+  --color-dark: #040404;
+  --color-text: #444444;
+  --color-text-dark: #040404;
+  --color-text-light: #717171;
+  --color-text-lighter: #99a1af;
+
+  /* Spacing and Radius tokens */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.375rem;
+  --radius-lg: 0.5rem;
+  --radius-xl: 0.75rem;
+  --radius-2xl: 1rem;
+}
+
+.dark {
+  /* OpenGIS Dark Theme Color Tokens */
+  --color-darkmode-primary: #ef4444;
+  --color-darkmode-primary-dark: #d63c3c;
+  --color-darkmode-body: #1e2939;
+  --color-darkmode-body-dark: #020617;
+  --color-darkmode-border: #3e3e3e;
+  --color-darkmode-light: #364153;
+  --color-darkmode-dark: #0f172a;
+  --color-darkmode-text: #d1d5dc;
+  --color-darkmode-text-dark: #ffffff;
+  --color-darkmode-text-light: #b4afb6;
+}
+
+html {
+  font-family: var(--font-primary);
+  font-size: var(--text-base);
+  line-height: 1.625;
 }
 
 body {
   margin: 0;
   padding: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-family: var(--font-primary);
+  background-color: var(--color-body);
+  color: var(--color-text);
   overflow: hidden;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
-/* Custom scrollbars */
+.dark body {
+  background-color: var(--color-darkmode-body-dark);
+  color: var(--color-darkmode-text);
+}
+
+/* OpenGIS Headings */
+h1, .h1 {
+  font-size: var(--text-h1-sm);
+  font-weight: 700;
+  line-height: 1.2;
+}
+@media (min-width: 768px) {
+  h1, .h1 { font-size: var(--text-h1); }
+}
+
+h2, .h2 {
+  font-size: var(--text-h2-sm);
+  font-weight: 700;
+  line-height: 1.25;
+}
+@media (min-width: 768px) {
+  h2, .h2 { font-size: var(--text-h2); }
+}
+
+h3, .h3 {
+  font-size: var(--text-h3-sm);
+  font-weight: 600;
+  line-height: 1.3;
+}
+@media (min-width: 768px) {
+  h3, .h3 { font-size: var(--text-h3); }
+}
+
+h4, .h4 { font-size: var(--text-h4); font-weight: 600; line-height: 1.35; }
+h5, .h5 { font-size: var(--text-h5); font-weight: 600; line-height: 1.4; }
+h6, .h6 { font-size: var(--text-h6); font-weight: 600; line-height: 1.45; }
+
+/* OpenGIS Button System */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: var(--radius-lg);
+  padding-inline: 1.25rem;
+  padding-block: 0.625rem;
+  font-weight: 600;
+  font-size: 0.875rem;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  border: 1px solid transparent;
+}
+.btn:focus {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+.btn-sm {
+  border-radius: var(--radius-md);
+  padding-inline: 0.875rem;
+  padding-block: 0.375rem;
+  font-size: 0.75rem;
+}
+.btn-primary {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+  color: #ffffff;
+  box-shadow: 0 1px 3px 0 rgba(239, 68, 68, 0.2);
+}
+.btn-primary:hover {
+  background-color: var(--color-primary-dark);
+  border-color: var(--color-primary-dark);
+}
+.dark .btn-primary {
+  background-color: var(--color-darkmode-primary);
+  border-color: var(--color-darkmode-primary);
+}
+.dark .btn-primary:hover {
+  background-color: var(--color-darkmode-primary-dark);
+  border-color: var(--color-darkmode-primary-dark);
+}
+
+.btn-outline-primary {
+  border: 1.5px solid #d1d5db;
+  color: var(--color-dark);
+  background-color: transparent;
+}
+.btn-outline-primary:hover {
+  background-color: #f1f5f9;
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+.dark .btn-outline-primary {
+  border-color: var(--color-darkmode-border);
+  color: var(--color-darkmode-text-dark);
+}
+.dark .btn-outline-primary:hover {
+  background-color: var(--color-darkmode-light);
+  border-color: var(--color-darkmode-primary);
+  color: var(--color-darkmode-primary);
+}
+
+/* OpenGIS Card System */
+.card {
+  border-radius: var(--radius-xl);
+  border-width: 1px;
+  border-style: solid;
+  border-color: var(--color-border);
+  background-color: var(--color-body);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+  transition: all 0.2s ease-in-out;
+}
+.card:hover {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.07), 0 4px 6px -4px rgba(0, 0, 0, 0.07);
+}
+.dark .card {
+  border-color: var(--color-darkmode-border);
+  background-color: var(--color-darkmode-dark);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -2px rgba(0, 0, 0, 0.3);
+}
+
+/* OpenGIS Header and Navbar */
+.header {
+  background-color: var(--color-body);
+  border-bottom: 1px solid var(--color-border);
+  transition: background-color 0.2s, border-color 0.2s;
+}
+.dark .header {
+  background-color: var(--color-darkmode-body-dark);
+  border-bottom-color: var(--color-darkmode-border);
+}
+.navbar-brand {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-text-dark);
+  text-decoration: none;
+}
+.dark .navbar-brand {
+  color: var(--color-darkmode-text-dark);
+}
+.nav-link {
+  font-weight: 600;
+  color: var(--color-text-dark);
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+.nav-link:hover {
+  color: var(--color-primary);
+}
+.dark .nav-link {
+  color: var(--color-darkmode-text);
+}
+.dark .nav-link:hover {
+  color: var(--color-darkmode-primary);
+}
+
+/* OpenGIS Form Inputs */
+.form-input {
+  appearance: none;
+  background-color: var(--color-body);
+  border: 1px solid #cbd5e1;
+  border-radius: var(--radius-lg);
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  color: var(--color-text-dark);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.form-input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15);
+}
+.dark .form-input {
+  background-color: var(--color-darkmode-body);
+  border-color: var(--color-darkmode-border);
+  color: var(--color-darkmode-text-dark);
+}
+.dark .form-input:focus {
+  border-color: var(--color-darkmode-primary);
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.25);
+}
+
+/* OpenGIS Notice / Callout Badges */
+.notice {
+  margin-bottom: 1rem;
+  border-radius: var(--radius-lg);
+  border-style: solid;
+  border-width: 1px;
+  padding: 0.875rem 1rem;
+  font-size: 0.8125rem;
+}
+.notice.note {
+  color: #1b83e2;
+  border-color: #93c5fd;
+  background-color: #eff6ff;
+}
+.dark .notice.note {
+  border-color: #1e3a8a;
+  background-color: #0f172a;
+  color: #93c5fd;
+}
+.notice.tip {
+  color: #059669;
+  border-color: #a7f3d0;
+  background-color: #ecfdf5;
+}
+.dark .notice.tip {
+  border-color: #064e3b;
+  background-color: #022c22;
+  color: #6ee7b7;
+}
+.notice.warning {
+  color: #d97706;
+  border-color: #fde68a;
+  background-color: #fffbeb;
+}
+.dark .notice.warning {
+  border-color: #78350f;
+  background-color: #451a03;
+  color: #fcd34d;
+}
+
+/* OpenGIS Scrollbars */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #0f172a;
+  background: var(--color-light);
 }
 ::-webkit-scrollbar-thumb {
-  background: #334155;
+  background: #cbd5e1;
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #475569;
+  background: #94a3b8;
 }
 
+.dark ::-webkit-scrollbar-track {
+  background: var(--color-darkmode-body-dark);
+}
+.dark ::-webkit-scrollbar-thumb {
+  background: var(--color-darkmode-light);
+  border-radius: 3px;
+}
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #475569;
+}
