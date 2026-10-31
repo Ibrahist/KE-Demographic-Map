@@ -5,6 +5,11 @@ export const metadata: Metadata = {
   title: 'Kenya Demographic Map | OpenGIS Powered Choropleth Atlas',
   description:
     "Explore Kenya's administrative hierarchy (County, Sub-County, Ward, Village) and public census demographics through interactive Google Maps choropleths styled with OpenGIS.",
+  icons: {
+    icon: '/kenya.png',
+    shortcut: '/kenya.png',
+    apple: '/kenya.png',
+  },
 };
 
 export default function RootLayout({
@@ -15,6 +20,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        <link rel="icon" href="/kenya.png" type="image/png" />
+        <link rel="apple-touch-icon" href="/kenya.png" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
