@@ -37,6 +37,7 @@ scratch_test_princeton.py
 Thumbs.db
 *.swp
 *.swo
+*.tsbuildinfo
 .vscode/
 .idea/
 *.log
