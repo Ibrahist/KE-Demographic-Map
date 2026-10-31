@@ -259,7 +259,7 @@ export default function Home() {
   );
 
   return (
-    <div className={`min-h-screen flex flex-col ${theme === 'dark' ? 'bg-slate-950 text-white' : 'bg-slate-100 text-slate-900'}`}>
+    <div className={`min-h-screen flex flex-col font-sans transition-colors duration-200 ${theme === 'dark' ? 'dark bg-[#020617] text-[#d1d5dc]' : 'light bg-[#ffffff] text-[#444444]'}`}>
       {/* Top Header */}
       <TopNav
         breadcrumbs={breadcrumbs}
@@ -271,7 +271,11 @@ export default function Home() {
         onOpenApiKeyModal={() => setIsApiKeyModalOpen(true)}
         hasApiKey={!!apiKey}
         theme={theme}
-        onToggleTheme={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+        onToggleTheme={() => {
+          const next = theme === 'dark' ? 'light' : 'dark';
+          setTheme(next);
+          setMapType(next);
+        }}
       />
 
       {/* Main Workspace Layout */}
@@ -279,7 +283,7 @@ export default function Home() {
         {/* Mobile Sidebar Toggle */}
         <button
           onClick={() => setIsMobileSidebarOpen(!isMobileSidebarOpen)}
-          className="md:hidden absolute top-3 left-3 z-30 p-2 rounded-xl bg-slate-900/90 text-white border border-slate-700 shadow-xl"
+          className="md:hidden absolute top-3 left-3 z-30 p-2 rounded-xl bg-white dark:bg-[#0f172a] text-neutral-800 dark:text-neutral-100 border border-neutral-200 dark:border-[#3e3e3e] shadow-xl hover:border-[#ef4444] transition-colors"
         >
           {isMobileSidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
         </button>
