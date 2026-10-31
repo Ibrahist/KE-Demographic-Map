@@ -1,7 +1,7 @@
 import { AdminLevel } from './indicators';
 
 export interface HierarchyBreadcrumb {
-  level: 'national' | 'county' | 'subcounty' | 'ward';
+  level: 'national' | 'county' | 'subcounty' | 'ward' | 'village';
   code?: number | string;
   name: string;
 }
