@@ -1,6 +1,6 @@
 /**
  * Client-side GeoJSON loading & caching utilities.
- * Implements lazy loading for ward and village partitioned files.
+ * Implements lazy loading for ward and village partitioned files with fallback to nationwide datasets.
  */
 
 const cache: Record<string, any> = {};
@@ -35,30 +35,58 @@ export async function loadSubcountiesGeoJson(countyCode?: number | string): Prom
 
 export async function loadWardsGeoJson(countyCode?: number | string): Promise<any> {
   if (!countyCode) {
-    // If no specific county, load general subcounties or default
-    return { type: 'FeatureCollection', features: [] };
+    // If no specific county selected, load nationwide wards layer (all 1,450 wards in Kenya)
+    try {
+      return await fetchGeoJson('/data/wards.geojson');
+    } catch (err) {
+      console.warn('Could not load nationwide wards.geojson:', err);
+      return { type: 'FeatureCollection', features: [] };
+    }
   }
+
   const cCodeNum = typeof countyCode === 'string' ? parseInt(countyCode, 10) : countyCode;
   const path = `/data/wards_${cCodeNum}.geojson`;
   try {
     return await fetchGeoJson(path);
   } catch (err) {
-    console.warn(`Could not load wards for county ${countyCode}:`, err);
-    return { type: 'FeatureCollection', features: [] };
+    console.warn(`Could not load partitioned wards for county ${countyCode}, falling back to wards.geojson:`, err);
+    try {
+      const full = await fetchGeoJson('/data/wards.geojson');
+      return {
+        type: 'FeatureCollection',
+        features: full.features.filter((f: any) => f.properties?.county_code === cCodeNum),
+      };
+    } catch (e) {
+      return { type: 'FeatureCollection', features: [] };
+    }
   }
 }
 
 export async function loadVillagesGeoJson(countyCode?: number | string): Promise<any> {
   if (!countyCode) {
-    return { type: 'FeatureCollection', features: [] };
+    // If no specific county selected, load nationwide populated settlements point layer
+    try {
+      return await fetchGeoJson('/data/villages_points.geojson');
+    } catch (err) {
+      console.warn('Could not load nationwide villages_points.geojson:', err);
+      return { type: 'FeatureCollection', features: [] };
+    }
   }
+
   const cCodeNum = typeof countyCode === 'string' ? parseInt(countyCode, 10) : countyCode;
   const path = `/data/villages_${cCodeNum}.geojson`;
   try {
     return await fetchGeoJson(path);
   } catch (err) {
-    console.warn(`Could not load villages for county ${countyCode}:`, err);
-    return { type: 'FeatureCollection', features: [] };
+    console.warn(`Could not load partitioned villages for county ${countyCode}, falling back to villages_points.geojson:`, err);
+    try {
+      const full = await fetchGeoJson('/data/villages_points.geojson');
+      return {
+        type: 'FeatureCollection',
+        features: full.features.filter((f: any) => f.properties?.county_code === cCodeNum),
+      };
+    } catch (e) {
+      return { type: 'FeatureCollection', features: [] };
+    }
   }
 }
-
