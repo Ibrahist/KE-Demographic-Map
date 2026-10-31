@@ -1,0 +1,45 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Next.js build output
+.next/
+out/
+build/
+dist/
+
+# Python cache & virtual environments
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+.venv/
+
+# Large raw archives (>20MB)
+data/raw/*.zip
+data/raw/wards/*.zip
+data/raw/cod_ab/
+data/raw/osm_places/
+data/raw/osm_education/
+data/raw/wards/
+data/raw/ict/
+
+# Scratch files
+scratch_test_princeton.py
+
+# System & IDE files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.vscode/
+.idea/
+*.log
+
+# Environment variables
+.env.local
