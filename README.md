@@ -1,3 +1,12 @@
+> [!WARNING]
+> ## ⚠️ Data Ownership & Permitted Use Disclaimer
+>
+> **Data Ownership:**
+> Please be advised that the author/creator of this project **does not own any of the data** used within this application or repository. All data has been obtained from publicly available sources (such as the Kenya National Bureau of Statistics [KNBS], OCHA COD-AB / HDX, IEBC, Ministry of Health [KMHFL], KDHS / DHS Program, and OpenStreetMap).
+>
+> **Permission Requirement:**
+> If you want to use, extract, republish, or redistribute any data from this project, **you must request and obtain permission directly from the respective owners of the data** and comply with their official licenses, attribution requirements, and terms of use.
+
 # Kenya Demographic Atlas & Interactive Choropleth Map
 
 An interactive Google Maps web application visualizing Kenya's 4-tier administrative hierarchy (**County → Sub-County → Ward → Village / Populated Place**) as dynamic choropleths driven by public demographic and survey data.
