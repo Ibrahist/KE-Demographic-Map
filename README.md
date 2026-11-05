@@ -15,6 +15,14 @@ Built with **Next.js (App Router, TypeScript)**, **Tailwind CSS**, and the **Goo
 
 ---
 
+## Application Screenshots
+
+![Kenya Demographic Atlas - Interactive Choropleth Map](docs/images/1.png)
+
+![Kenya Administrative Hierarchy and Demographic Data Exploration](docs/images/2.png)
+
+---
+
 ## Features
 
 - **Multi-Level Administrative Hierarchy**:
